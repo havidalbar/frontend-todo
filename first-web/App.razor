@@ -1,7 +1,36 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@inject NavigationManager NavigationManager
+@inject first_web.Service.AuthService AuthService
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        @if (AuthService.IsAuthenticated())
+        {
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        }
+        else
+        {
+            // Get the current path
+            var currentPath = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath;
+
+            // If the user is not authenticated and is not on the login page, redirect
+            if (currentPath != "/login")
+            {
+                try
+                {
+                    NavigationManager.NavigateTo("/login", true);
+                }
+                catch (NavigationException)
+                {
+                    // Handle the exception if necessary, or log it
+                }
+            }
+            else
+            {
+                // Render the login page if they are already on it
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            }
+        }
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
@@ -11,3 +40,29 @@
     </NotFound>
 </Router>
 
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Check if the user is authenticated on the first render
+            if (!AuthService.IsAuthenticated())
+            {
+                var currentPath = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath;
+
+                // Redirect to the login page if not authenticated
+                if (currentPath != "/login")
+                {
+                    try
+                    {
+                        NavigationManager.NavigateTo("/login", true);
+                    }
+                    catch (NavigationException)
+                    {
+                        // Handle the exception or log it as needed
+                    }
+                }
+            }
+        }
+    }
+}

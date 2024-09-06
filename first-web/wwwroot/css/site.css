@@ -68,6 +68,30 @@ a, .btn-link {
     }
 
 .modal-header {
-    background-color: #6f42c1; /* Purple color */
+    background: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%); /* Purple color */
     color: white; /* White text */
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%); /* Soft purple background */
+    color: white; /* Darker purple text */
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    background-color: #9c27b0; /* Soft purple button */
+    border: none;
+    color: white;
 }

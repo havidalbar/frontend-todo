@@ -19,6 +19,7 @@ builder.Services.AddScoped(sp => new HttpClient
 // Register your services
 builder.Services.AddScoped<TodoService>();
 builder.Services.AddScoped<TodoDetailService>();
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
