@@ -51,7 +51,7 @@ For detailed API specifications, please refer to the Swagger documentation avail
 
 ### Accessing the Application
 
-Open your web browser and navigate to [https://todo-api.bestcar.id](https://todo-api.bestcar.id) to start using the Todo application.
+Open your web browser and navigate to [https://localhost:7163/](https://localhost:7163/) to start using the Todo application.
 
 ## Contributing
 
