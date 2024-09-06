@@ -1,0 +1,101 @@
+﻿@page "/todos"
+@using first_web.Model
+@inject first_web.Service.TodoService TodoService
+
+<h3>Todo List</h3>
+
+<button class="btn btn-primary" @onclick="ShowCreateTodoModal">Add Todo</button>
+
+@if (todos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul class="list-group mt-3">
+        @foreach (var todo in todos)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>@todo.Note</span>
+                <div>
+                    <button class="btn btn-secondary btn-sm" @onclick="() => EditTodo(todo.TodoId)">Edit</button>
+                    @*<button class="btn btn-danger btn-sm" @onclick="() => DeleteTodo(todo.TodoId)">Delete</button>*@
+                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteTodo(todo.TodoId)" disabled="@isDeleting">Delete</button>
+                    @if (isDeleting && selectedTodo?.TodoId == todo.TodoId)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+@if (showModal)
+{
+    <div class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px; width: auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((selectedTodo.TodoId == null) ? "Create Todo" : "Edit Todo")</h5>
+                    <button type="button" class="close" @onclick="CloseModal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <TodoForm Todo="selectedTodo" OnTodoChanged="@((todo) => OnTodoChanged(todo))" OnClose="@CloseModal" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Todo> todos;
+    private Todo selectedTodo = new Todo();
+    private bool showModal = false;
+    private bool isDeleting = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTodos();
+    }
+
+    private async Task LoadTodos()
+    {
+        todos = await TodoService.GetTodosAsync();
+    }
+
+    private void ShowCreateTodoModal()
+    {
+        selectedTodo = new Todo();
+        showModal = true;
+    }
+
+    private void EditTodo(string id)
+    {
+        selectedTodo = todos.FirstOrDefault(t => t.TodoId == id);
+        showModal = true;
+    }
+
+    private async Task DeleteTodo(string id)
+    {
+        isDeleting = true;
+        selectedTodo = todos.FirstOrDefault(t => t.TodoId == id);
+
+        await TodoService.DeleteTodoAsync(id);
+        await LoadTodos();
+        isDeleting = false;
+    }
+
+    private async Task CloseModal()
+    {
+        showModal = false;
+        await LoadTodos();
+    }
+
+    private async Task OnTodoChanged(Todo todo)
+    {
+        selectedTodo = todo;
+    }
+}
