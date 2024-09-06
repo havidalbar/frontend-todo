@@ -3,7 +3,7 @@ namespace first_web.Model
 {
 	public class TodoDetail
 	{
-        public string TodolId { get; set; }
+        public string TodoId { get; set; }
         public string TodoDetailId { get; set; }
         public string Activity { get; set; }
         public string Category { get; set; }

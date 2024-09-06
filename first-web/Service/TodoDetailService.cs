@@ -14,27 +14,27 @@ namespace first_web.Service
 
         public async Task<List<TodoDetail>> GetTodoDetailsAsync(string todoId)
         {
-            return await _httpClient.GetFromJsonAsync<List<TodoDetail>>($"https://1752-182-2-143-137.ngrok-free.app/todos/{todoId}/details");
+            return await _httpClient.GetFromJsonAsync<List<TodoDetail>>($"https://todo-api.bestcar.id/api/v1/todo/detail/{todoId}");
         }
 
         public async Task<TodoDetail> GetTodoDetailAsync(string todoDetailId)
         {
-            return await _httpClient.GetFromJsonAsync<TodoDetail>($"https://1752-182-2-143-137.ngrok-free.app/tododetails/{todoDetailId}");
+            return await _httpClient.GetFromJsonAsync<TodoDetail>($"https://todo-api.bestcar.id/api/v1/todo/detail/{todoDetailId}");
         }
 
-        public async Task CreateTodoDetailAsync(string todoId, TodoDetail todoDetail)
+        public async Task CreateTodoDetailAsync(TodoDetail todoDetail)
         {
-            await _httpClient.PostAsJsonAsync($"https://1752-182-2-143-137.ngrok-free.app/todos/{todoId}/details", todoDetail);
+            await _httpClient.PostAsJsonAsync($"https://todo-api.bestcar.id/api/v1/todo/detail", todoDetail);
         }
 
         public async Task UpdateTodoDetailAsync(TodoDetail todoDetail)
         {
-            await _httpClient.PutAsJsonAsync($"https://1752-182-2-143-137.ngrok-free.app/tododetails/{todoDetail.TodoDetailId}", todoDetail);
+            await _httpClient.PutAsJsonAsync($"https://todo-api.bestcar.id/api/v1/todo/detail", todoDetail);
         }
 
         public async Task DeleteTodoDetailAsync(string todoDetailId)
         {
-            await _httpClient.DeleteAsync($"https://1752-182-2-143-137.ngrok-free.app/tododetails/{todoDetailId}");
+            await _httpClient.DeleteAsync($"https://todo-api.bestcar.id/api/v1/todo/detail/?todoDetailId={todoDetailId}");
         }
     }
 }
