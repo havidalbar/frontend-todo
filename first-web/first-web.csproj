@@ -24,4 +24,7 @@
     <Folder Include="Service\" />
     <Folder Include="Pages\Todo\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\todo.png" />
+  </ItemGroup>
 </Project>
